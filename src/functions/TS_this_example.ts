@@ -43,3 +43,40 @@ function f(this: void) {
     // make sure `this` is unusable in this standalone function
 }
  */
+
+
+
+/*
+Because this is a normal function/method declaration, `this` causes an issue
+class Handler {
+    info: string;
+    onClickBad(this: Handler, e: Event) {
+        // oops, used `this` here.  Using this callback would crash at runtime
+        this.info = e.message;
+    }
+}
+
+let h = new Handler();
+uiElement.addClickListener(h.onClickBad); // causes an error
+
+ */
+
+class Handler {
+    info: string;
+    onClickGood(this: void, e: Event) {
+        // can't use `this` here because it's of the type void
+        console.log('clicked!');
+    }
+}
+let h = new Handler();
+// @ts-ignore just to keep this from giving me errors on WebStorm since uiElement doesn't exist
+uiElement.addClickListener(h.onClickGood);
+
+/*
+However if we still wanted to use `this` we would have to define the click event as an arrow function
+
+class Handler {
+    info: string;
+    onClickGood = (e: Event) => { this.info = e.message }
+}
+ */
