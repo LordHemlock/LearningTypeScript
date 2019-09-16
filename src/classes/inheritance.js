@@ -1,3 +1,4 @@
+// @ts-ignore
 class Animal {
     constructor(theName) { this.name = theName; }
     move(distanceInMeters = 0) {
